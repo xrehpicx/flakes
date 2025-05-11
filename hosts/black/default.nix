@@ -25,5 +25,12 @@ in {
   # Enable SSH login
   services.openssh.enable = true;
 
+  # Enable SDDM display manager
+  services.xserver.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+
   # (optional) any host-specific overrides here…
 } 
