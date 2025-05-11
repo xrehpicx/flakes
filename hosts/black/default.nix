@@ -4,7 +4,6 @@ let
   ourModules = [
     ./hardware-configuration.nix
     ../../modules/shared-packages.nix
-    ../../modules/linux-desktop.nix
     ../../modules/linux-secureboot.nix
   ];
 in {
