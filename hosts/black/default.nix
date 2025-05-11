@@ -11,6 +11,7 @@ in {
   imports = ourModules;
 
   networking.hostName = "black";
+  networking.networkmanager.enable = true;
 
   boot.loader.systemd-boot.enable      = true;
   boot.loader.efi.canTouchEfiVariables = true;
