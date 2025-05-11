@@ -1,14 +1,6 @@
 { config, pkgs, inputs, system, ... }:
 
 {
-
-  inputs = {
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-  };
-
   # Enable KDE Plasma 6 session (user-level)
   programs.plasma = {
     enable = true;
@@ -31,7 +23,6 @@
   # Printing (CUPS client)
   services.printing.enable = true;
 
-  # Optionally, add user packages or other Home Manager settings here
   home.packages = with pkgs; [
     vim
     neovim
