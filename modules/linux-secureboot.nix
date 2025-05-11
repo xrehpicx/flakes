@@ -17,13 +17,14 @@
       exit 0
     fi
 
-    # Check if keys are already created and installed
-    if ! ${pkgs.sbctl}/bin/sbctl status | grep -q "Installed:\t✓ sbctl is installed"; then
-      echo "Secure Boot keys not installed. Creating and enrolling keys..."
-      ${pkgs.sbctl}/bin/sbctl create-keys || echo "Warning: Failed to create keys"
-      ${pkgs.sbctl}/bin/sbctl enroll-keys -m || echo "Warning: Failed to enroll keys"
+    # Check if keys are already created and sbctl is properly installed
+    # Looking for "Installed:" followed by "sbctl is installed" with any characters in between
+    if ! ${pkgs.sbctl}/bin/sbctl status | grep -q "Installed:.*sbctl is installed"; then
+      echo "Secure Boot keys not detected as installed by sbctl. Attempting to create and enroll keys..."
+      ${pkgs.sbctl}/bin/sbctl create-keys || echo "Warning: Failed to create Secure Boot keys (they might already exist or another issue occurred)."
+      ${pkgs.sbctl}/bin/sbctl enroll-keys -m || echo "Warning: Failed to enroll Secure Boot keys (system might not be in Setup Mode or keys already enrolled)."
     else
-      echo "Secure Boot keys already installed."
+      echo "Secure Boot keys appear to be correctly installed and managed by sbctl."
     fi
   '';
 

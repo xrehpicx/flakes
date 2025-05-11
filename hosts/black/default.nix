@@ -36,15 +36,15 @@
   };
 
   # Desktop environment configuration
-  services.xserver = {
+  services.xserver.enable = true; # X server itself
+
+  services.displayManager.sddm = { # SDDM configuration moved here
     enable = true;
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-      theme = "breeze";
-    };
-    desktopManager.plasma6.enable = true;
+    wayland.enable = true;
+    theme = "breeze";
   };
+
+  services.desktopManager.plasma6.enable = true; # Plasma 6 configuration moved here
 
   # Enable Hyprland
   programs.hyprland = {
@@ -54,8 +54,8 @@
   };
 
   # Essential packages
-  environment.systemPackages = with pkgs; [ 
-    home-manager 
+  environment.systemPackages = with pkgs; [
+    home-manager
   ];
 
   # Enable flakes

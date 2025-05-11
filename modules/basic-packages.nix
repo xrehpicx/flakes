@@ -33,7 +33,7 @@
       defaultEditor = true;
     };
     
-    bash.enableCompletion = true;
+    bash.completion.enable = true;
     fish.enable = true;
   };
 } 
