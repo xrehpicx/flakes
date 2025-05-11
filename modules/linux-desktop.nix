@@ -13,7 +13,7 @@
   services.desktopManager.plasma6.enable = true;
 
   # Also install and enable Hyprland as a second session
-  services.xserver.windowManager.hyprland.enable = true;
+  programs.hyprland.enable = true;
 
   # Audio & printing
   services.pipewire = {
