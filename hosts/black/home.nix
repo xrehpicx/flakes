@@ -39,4 +39,6 @@
     wget
     git
   ];
+
+  home.stateVersion = "24.11";
 } 
