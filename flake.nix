@@ -3,32 +3,48 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, ... }:
+  outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
     let
-      system = "x86_64-linux";
+      lib = nixpkgs.lib;
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+      forAllSystems = lib.genAttrs systems;
+      
+      # Function to create system-specific pkgs with optional overlays
+      pkgsForSystem = system: overlays: import nixpkgs {
+        inherit system overlays;
+        config.allowUnfree = true;
+      };
     in {
       nixosConfigurations = {
-        black = nixpkgs.lib.nixosSystem {
-          inherit system;
+        black = lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };  # Pass all inputs, more flexible
           modules = [ ./hosts/black/default.nix ];
-          specialArgs = { inherit system; inputs = { inherit hyprland; }; };
         };
         # Add more hosts like this:
-        # foo = nixpkgs.lib.nixosSystem {
-        #   inherit system;
+        # foo = lib.nixosSystem {
+        #   system = "x86_64-linux";
+        #   specialArgs = { inherit inputs; };
         #   modules = [ ./hosts/foo/default.nix ];
         # };
       };
+      
       homeConfigurations = {
         "raj@black" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = { inherit system; inputs = { inherit hyprland; }; };
+          pkgs = pkgsForSystem "x86_64-linux" [];
+          extraSpecialArgs = { inherit inputs; };
           modules = [ ./hosts/black/home.nix ];
         };
       };
