@@ -10,7 +10,7 @@
   # Enable Hyprland as a session (user-level)
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${system}.hyprland;
+    package = pkgs.hyprland;
   };
 
   # Audio (PipeWire, ALSA, PulseAudio)
