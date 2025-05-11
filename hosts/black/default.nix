@@ -23,5 +23,8 @@ in {
     # you'll still run `passwd raj` after first boot
   };
 
+  # Enable SSH login
+  services.openssh.enable = true;
+
   # (optional) any host-specific overrides here…
 } 
