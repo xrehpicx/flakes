@@ -32,5 +32,11 @@
   services.printing.enable = true;
 
   # Optionally, add user packages or other Home Manager settings here
-  # home.packages = with pkgs; [ ... ];
+  home.packages = with pkgs; [
+    vim
+    neovim
+    kitty
+    wget
+    git
+  ];
 } 
