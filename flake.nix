@@ -23,7 +23,7 @@
       };
       homeConfigurations = {
         "raj@black" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { inherit system; config = {}; };
+          pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = { inherit system; inputs = self.inputs; };
           modules = [ ./hosts/black/home.nix ];
         };
