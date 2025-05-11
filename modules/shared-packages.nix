@@ -6,5 +6,6 @@
     neovim
     kitty
     wget
+    git
   ];
 } 
