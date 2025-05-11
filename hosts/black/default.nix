@@ -32,4 +32,6 @@ in {
   };
 
   # (optional) any host-specific overrides here…
+
+  environment.systemPackages = with pkgs; [ home-manager ];
 } 
