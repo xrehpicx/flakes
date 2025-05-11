@@ -3,7 +3,6 @@
 let
   ourModules = [
     ./hardware-configuration.nix
-    ../../modules/shared-packages.nix
     ../../modules/linux-secureboot.nix
   ];
 in {
