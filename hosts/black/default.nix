@@ -49,7 +49,8 @@
   # Enable Hyprland
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Using hyprland from nixpkgs for stability
+    package = pkgs.hyprland;
   };
 
   # Essential packages
