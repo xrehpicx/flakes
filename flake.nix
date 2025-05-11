@@ -24,7 +24,6 @@
       homeConfigurations = {
         "raj@black" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; };
-          inherit system;
           extraSpecialArgs = { inherit system; inputs = self.inputs; };
           modules = [ ./hosts/black/home.nix ];
         };
