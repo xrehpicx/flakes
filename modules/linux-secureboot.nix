@@ -2,21 +2,20 @@
 
 let
   sbctlBin = "${pkgs.sbctl}/bin/sbctl";
-  sbDir = "/etc/sbctl";
 in
 {
   environment.systemPackages = with pkgs; [ sbctl ];
 
-  # generate and enroll Secure Boot keys once, before activation
+  # Only create/enroll keys if Secure Boot is not already set up
   system.activationScripts.sbctl-enroll = lib.mkBefore ''
-    if [ ! -f ${sbDir}/db.crt ]; then
+    if ! ${sbctlBin} status | grep -q "Installed:\	✓ sbctl is installed"; then
       ${sbctlBin} create-keys
-      ${sbctlBin} enroll-keys -m --yes
+      ${sbctlBin} enroll-keys -m
     fi
   '';
 
-  # automatically re-sign every EFI entry in your ESP on each activation
+  # Automatically sign all known files in the database on each activation
   system.activationScripts.sbctl-sign = lib.mkAfter ''
-    ${sbctlBin} sign --batch /boot/nixos/*.efi
+    ${sbctlBin} sign-all
   '';
 } 
