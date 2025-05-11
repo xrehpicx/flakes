@@ -4,6 +4,7 @@ let
   ourModules = [
     ./hardware-configuration.nix
     ../../modules/linux-secureboot.nix
+    ../../modules/basic-packages.nix
   ];
 in {
   imports = ourModules;
@@ -33,5 +34,5 @@ in {
 
   # (optional) any host-specific overrides here…
 
-  environment.systemPackages = with pkgs; [ home-manager git ];
+  environment.systemPackages = with pkgs; [ home-manager ];
 } 
