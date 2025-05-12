@@ -107,16 +107,12 @@ in
       accelSpeed = "0.3";
       disableWhileTyping = true;
     };
-    
-    # Enable touchscreen
-    touchscreen.enable = true;
   };
 
   # Add X11 input configuration
   services.xserver = {
     libinput = {
       enable = true;
-      touchscreen.enable = true;
     };
   };
 
