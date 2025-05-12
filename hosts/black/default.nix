@@ -38,24 +38,42 @@
   # Desktop environment configuration
   services.xserver.enable = true; # X server itself
 
-  services.displayManager.sddm = { # SDDM configuration moved here
+  services.displayManager.sddm = { # SDDM configuration
     enable = true;
     wayland.enable = true;
     theme = "breeze";
   };
 
-  services.desktopManager.plasma6.enable = true; # Plasma 6 configuration moved here
+  services.desktopManager.plasma6.enable = true; # Plasma 6 configuration
 
   # Enable Hyprland
   programs.hyprland = {
     enable = true;
-    # package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Using hyprland from nixpkgs for stability
     package = pkgs.hyprland;
   };
+  
+  # Audio services (previously in home.nix)
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
 
-  # Essential packages
+  # Printing services (previously in home.nix)
+  services.printing.enable = true;
+
+  # Session variables (previously in home.nix)
+  environment.sessionVariables = {
+    EDITOR = "vim";
+    TERMINAL = "kitty";
+  };
+
+  
   environment.systemPackages = with pkgs; [
-    home-manager
+    kitty
+    firefox
   ];
 
   # Enable flakes
