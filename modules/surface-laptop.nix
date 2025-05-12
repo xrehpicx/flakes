@@ -9,6 +9,9 @@
   # Override common module settings under hardware.microsoft-surface
   hardware.microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
 
+  # Enable Intel microcode updates
+  hardware.cpu.intel.updateMicrocode = true;
+
   # Surface-specific and post-installation packages
   environment.systemPackages = with pkgs; [
     libwacom          # For tablet input devices
@@ -17,7 +20,6 @@
     brightnessctl     # For display brightness control
     iio-sensor-proxy  # For automatic screen rotation
     linux-firmware    # Required firmware for various devices
-    intel-microcode   # CPU microcode updates for Intel processors
   ];
 
   # Enable better power management
@@ -39,8 +41,8 @@
     };
   };
 
-  # Enable better touchpad support
-  services.xserver.libinput = {
+  # Enable better touchpad support (updated path)
+  services.libinput = {
     enable = true;
     touchpad = {
       naturalScrolling = true;
@@ -57,9 +59,6 @@
 
   # Enable firmware updates through fwupd
   services.fwupd.enable = true;
-
-  # Use NixOS kernel microcode module for Intel
-  hardware.cpu.intel.updateMicrocode = true;
 
   # Remove incorrect microsoft-surface.ipts option; enable IPTSd correctly
   # Ensure IPTSd daemon is installed and its service is enabled
