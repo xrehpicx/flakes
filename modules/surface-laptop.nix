@@ -22,7 +22,7 @@
     brightnessctl     # For display brightness control
     iio-sensor-proxy  # For automatic screen rotation
     linux-firmware    # Required firmware for various devices
-    intel-microcode   # CPU microcode updates for Intel processors
+    microcodeIntel    # CPU microcode updates for Intel processors
   ];
 
   # Enable better power management
@@ -69,8 +69,8 @@
   # Enable firmware updates through fwupd
   services.fwupd.enable = true;
 
-  # Include microcode in the initrd for Intel
-  boot.initrd.packages = with pkgs; [ intel-microcode ];
+  # Use NixOS kernel microcode module for Intel
+  hardware.cpu.intel.updateMicrocode = true;
 
   # Fallback configuration in case the nixos-hardware overlay doesn't work
   # This custom kernel configuration is commented out by default, but can be
