@@ -25,7 +25,7 @@
       nixosConfigurations = {
         black = lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };  # Pass all inputs, more flexible
+          specialArgs = { inherit inputs; zen-browser = inputs.zen-browser; };
           modules = [ ./hosts/black/default.nix ];
         };
         # Add more hosts like this:

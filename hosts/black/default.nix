@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, zen-browser, ... }:
 
 {
   imports = [
@@ -24,7 +24,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "audio" ];
     packages = [
-      inputs.zen-browser.packages.${pkgs.system}.default
+      zen-browser.packages.${pkgs.system}.default
     ];
     # you'll still run `passwd raj` after first boot
   };
