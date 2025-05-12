@@ -6,13 +6,10 @@
     inputs.nixos-hardware.nixosModules."microsoft-surface-common"
   ];
 
-  # Surface specific configuration
-  microsoft-surface = {
-    kernelVersion = "stable";  # override from default 6.0.17
-    surface-control.enable = true;
-    ipts.enable = true;   # For the touchscreen
-    surface-aggregator.enable = true;
-  };
+  # Override common module settings
+  microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
+  microsoft-surface.surface-control.enable = true;
+  microsoft-surface.ipts.enable = true;   # For the touchscreen
 
   # Surface-specific and post-installation packages
   environment.systemPackages = with pkgs; [
