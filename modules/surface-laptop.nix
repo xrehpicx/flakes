@@ -54,18 +54,18 @@ in
   ] ++ (if builtins.hasAttr "surfacectl" unstablePkgs then [ unstablePkgs.surfacectl ] else [])
     ++ (if builtins.hasAttr "iptsd" unstablePkgs then [ unstablePkgs.iptsd ] else [ pkgs.iptsd ]);
 
-  # Enhanced IPTSd daemon configuration for Surface touchscreen/pen support
+  # Install iptsd for Surface touchscreen/pen support
   systemd.packages = with pkgs; [ iptsd ];
   services.udev.packages = with pkgs; [ iptsd ];
-  
-  # Enable and make sure iptsd service is running
+
+  # Enable and configure iptsd service for touchscreen
   systemd.services.iptsd = {
     enable = true;
-    wantedBy = [ "multi-user.target" ];
     description = "Intel Precise Touch & Stylus Daemon";
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      Type = "simple";
       ExecStart = "${pkgs.iptsd}/bin/iptsd";
+      Type = "simple";
       Restart = "always";
       RestartSec = "1";
     };
