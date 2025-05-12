@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/linux-secureboot.nix
     ../../modules/basic-packages.nix
-    ../../modules/surface-laptop.nix
+    # ../../modules/surface-laptop.nix
   ];
 
   networking = {
