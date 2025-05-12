@@ -118,4 +118,17 @@ in
     # Trigger iptsd service for each IPTS HIDRAW device via templated unit
     SUBSYSTEM=="hidraw", SUBSYSTEMS=="usb", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="099f", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iptsd@%k.service"
   '';
+
+  # Add templated systemd service for iptsd instances
+  systemd.services."iptsd@" = {
+    description = "Intel Precise Touch & Stylus Daemon for device %i";
+    template = true;
+    serviceConfig = {
+      ExecStart = "${pkgs.iptsd}/bin/iptsd /dev/%i";
+      Type = "simple";
+      Restart = "always";
+      RestartSec = "1";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
 } 

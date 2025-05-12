@@ -43,7 +43,10 @@
             zen-browser = inputs.zen-browser;
             nixos-unstable = nixos-unstable;
           };
-          modules = [ ./hosts/black/default.nix ];
+          modules = [ 
+            ./hosts/black/default.nix
+            nixos-hardware.nixosModules.microsoft/surface/common
+          ];
         };
         # Add more hosts like this:
         # foo = lib.nixosSystem {
