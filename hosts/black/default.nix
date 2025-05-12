@@ -23,7 +23,7 @@
 
   users.users.raj = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "audio" "surface-control" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
     packages = [
       zen-browser.packages.${pkgs.system}.default
     ];

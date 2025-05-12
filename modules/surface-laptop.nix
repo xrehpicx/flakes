@@ -9,9 +9,6 @@
   # Use the prebuilt Surface kernel from nixos-unstable binary cache
   boot.kernelPackages = nixos-unstable.legacyPackages.${pkgs.system}.linuxPackages_surface;
 
-  # Enable surface-control for command-line management of Surface devices
-  hardware.microsoft-surface.surface-control.enable = true;
-
   # Add useful Surface utilities
   environment.systemPackages = with pkgs; [
     libwacom          # For tablet input devices
@@ -74,4 +71,11 @@
   
   # Enable Intel microcode updates
   hardware.cpu.intel.updateMicrocode = true;
+
+  # Add udev rule for surface-control (to avoid needing the surface-control group)
+  services.udev.extraRules = ''
+    # Surface control devices
+    SUBSYSTEM=="surface", ACTION=="add", TAG+="systemd", ENV{SYSTEMD_WANTS}="surface-control.service"
+    KERNEL=="surface_aggregator", GROUP="input", MODE="0660"
+  '';
 } 

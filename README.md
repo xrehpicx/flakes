@@ -40,9 +40,22 @@ To use the camera with proper support in Firefox, you can run:
 libcamerify firefox
 ```
 
-### Surface-Control
+### Using Surface Utilities
 
-The `surface-control` utility is enabled, allowing command-line management of Surface device features. The `raj` user has been added to the `surface-control` group for permission access.
+The `surfacectl` utility is installed for command-line management of Surface device features. The `raj` user has been added to the `input` group for access to required devices.
+
+You can use surfacectl to manage various Surface features:
+
+```bash
+# Show device information
+surfacectl status
+
+# Control performance profiles
+surfacectl performance
+
+# Manage battery limits
+surfacectl battery
+```
 
 ## Usage
 
