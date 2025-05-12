@@ -8,6 +8,7 @@
 
   # Surface specific configuration
   microsoft-surface = {
+    kernelVersion = "stable";  # override from default 6.0.17
     surface-control.enable = true;
     ipts.enable = true;   # For the touchscreen
     surface-aggregator.enable = true;
@@ -69,7 +70,7 @@
   services.fwupd.enable = true;
 
   # Include microcode in the initrd for Intel
-  boot.initrd.linuxPackages = with pkgs; [ intel-microcode ];
+  boot.initrd.packages = with pkgs; [ intel-microcode ];
 
   # Fallback configuration in case the nixos-hardware overlay doesn't work
   # This custom kernel configuration is commented out by default, but can be
