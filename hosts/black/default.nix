@@ -95,4 +95,8 @@
 
   # State version should rarely change
   system.stateVersion = "24.11";
+
+  # Fix dual-boot time skew: use localtime for RTC
+  time.timeZone = "UTC";  # adjust to your timezone
+  hardware.clock.localTime = true;
 } 

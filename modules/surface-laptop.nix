@@ -1,11 +1,9 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  # Import the microsoft surface module from nixos-hardware
+  # Import only the common Surface modules
   imports = [
-    # Common Surface modules and the Intel Laptop profile
     inputs.nixos-hardware.nixosModules."microsoft-surface-common"
-    inputs.nixos-hardware.nixosModules."microsoft-surface-surface-laptop-intel"
   ];
 
   # Surface specific configuration
