@@ -39,12 +39,6 @@
     };
   };
 
-  # For better display support
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-  };
-
   # Enable better touchpad support
   services.xserver.libinput = {
     enable = true;
@@ -72,6 +66,9 @@
   systemd.packages = with pkgs; [ iptsd ];
   services.udev.packages = with pkgs; [ iptsd ];
   systemd.services.iptsd.enable = true;
+
+  # Explicitly disable power-profiles-daemon to avoid conflict with TLP
+  services.power-profiles-daemon.enable = false;
 
   # Fallback configuration in case the nixos-hardware overlay doesn't work
   # This custom kernel configuration is commented out by default, but can be
