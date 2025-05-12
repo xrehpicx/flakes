@@ -58,19 +58,6 @@ in
   systemd.packages = with pkgs; [ iptsd ];
   services.udev.packages = with pkgs; [ iptsd ];
 
-  # Enable and configure iptsd service for touchscreen
-  systemd.services.iptsd = {
-    enable = true;
-    description = "Intel Precise Touch & Stylus Daemon";
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.iptsd}/bin/iptsd";
-      Type = "simple";
-      Restart = "always";
-      RestartSec = "1";
-    };
-  };
-
   # Enable better power management
   services.thermald.enable = true;
   powerManagement.enable = true;
@@ -126,6 +113,9 @@ in
     KERNEL=="ipts", MODE="0666", GROUP="input"
     
     # Intel Precise Touch (IPTS) devices
-    SUBSYSTEM=="mei", ATTRS{name}=="ipts", GROUP="input", MODE="0660" 
+    SUBSYSTEM=="mei", ATTRS{name}=="ipts", GROUP="input", MODE="0660"
+    
+    # Trigger iptsd service for each IPTS HIDRAW device via templated unit
+    SUBSYSTEM=="hidraw", SUBSYSTEMS=="usb", ATTRS{idVendor}=="045e", ATTRS{idProduct}=="099f", TAG+="systemd", ENV{SYSTEMD_WANTS}+="iptsd@%k.service"
   '';
 } 
