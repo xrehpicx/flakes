@@ -23,6 +23,9 @@
   users.users.raj = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "audio" ];
+    packages = [
+      inputs.zen-browser.packages.${pkgs.system}.default
+    ];
     # you'll still run `passwd raj` after first boot
   };
 
