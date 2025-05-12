@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/linux-secureboot.nix
     ../../modules/basic-packages.nix
-    (import ../../modules/surface-laptop.nix { inherit config lib pkgs inputs nixos-unstable; })
+    ../../modules/surface-laptop.nix
   ];
 
   networking = {

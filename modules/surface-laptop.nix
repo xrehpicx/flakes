@@ -1,6 +1,9 @@
-{ config, lib, pkgs, inputs, nixos-unstable, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
+  # Get nixos-unstable from inputs
+  nixos-unstable = inputs.nixos-unstable;
+  
   # Import the unstable channel properly
   unstablePkgs = import nixos-unstable {
     system = pkgs.system;
@@ -17,11 +20,13 @@ in
     inputs.nixos-hardware.nixosModules.microsoft-surface-common
   ];
 
+  # Override the boot.kernelPackages from the Surface module using mkForce
   # Use the prebuilt Surface kernel from nixos-unstable if available, otherwise use regular kernel
-  boot.kernelPackages = 
+  boot.kernelPackages = lib.mkForce (
     if hasSurfaceKernel 
     then unstablePkgs.linuxPackages_surface 
-    else pkgs.linuxPackages_latest;
+    else pkgs.linuxPackages_latest
+  );
 
   # Add useful Surface utilities
   environment.systemPackages = with pkgs; [
