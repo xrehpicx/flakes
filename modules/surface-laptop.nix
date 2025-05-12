@@ -6,10 +6,10 @@
     inputs.nixos-hardware.nixosModules."microsoft-surface-common"
   ];
 
-  # Override common module settings
-  microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
-  microsoft-surface.surface-control.enable = true;
-  microsoft-surface.ipts.enable = true;   # For the touchscreen
+  # Override common module settings under hardware.microsoft-surface
+  hardware.microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
+  hardware.microsoft-surface.surface-control.enable = true;
+  hardware.microsoft-surface.ipts.enable = true;   # For the touchscreen
 
   # Surface-specific and post-installation packages
   environment.systemPackages = with pkgs; [
@@ -19,7 +19,7 @@
     brightnessctl     # For display brightness control
     iio-sensor-proxy  # For automatic screen rotation
     linux-firmware    # Required firmware for various devices
-    microcodeIntel    # CPU microcode updates for Intel processors
+    intel-microcode   # CPU microcode updates for Intel processors
   ];
 
   # Enable better power management
