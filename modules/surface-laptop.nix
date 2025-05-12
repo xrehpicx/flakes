@@ -9,7 +9,6 @@
   # Override common module settings under hardware.microsoft-surface
   hardware.microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
   hardware.microsoft-surface.surface-control.enable = true;
-  hardware.microsoft-surface.ipts.enable = true;   # For the touchscreen
 
   # Surface-specific and post-installation packages
   environment.systemPackages = with pkgs; [
@@ -68,6 +67,12 @@
 
   # Use NixOS kernel microcode module for Intel
   hardware.cpu.intel.updateMicrocode = true;
+
+  # Remove incorrect microsoft-surface.ipts option; enable IPTSd correctly
+  # Ensure IPTSd daemon is installed and its service is enabled
+  systemd.packages = with pkgs; [ iptsd ];
+  services.udev.packages = with pkgs; [ iptsd ];
+  systemd.services.iptsd.enable = true;
 
   # Fallback configuration in case the nixos-hardware overlay doesn't work
   # This custom kernel configuration is commented out by default, but can be
