@@ -47,7 +47,6 @@
           };
           modules = [ 
             ./hosts/black/default.nix
-            nixos-hardware.nixosModules.microsoft-surface-common
           ];
         };
         # Add more hosts like this:

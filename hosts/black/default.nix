@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/linux-secureboot.nix
     ../../modules/basic-packages.nix
-    # ../../modules/surface-laptop.nix
+    inputs.nixos-hardware.nixosModules.microsoft-surface-common
   ];
 
   networking = {
