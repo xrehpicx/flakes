@@ -65,6 +65,7 @@ in
     description = "Intel Precise Touch & Stylus Daemon";
     serviceConfig = {
       Type = "simple";
+      ExecStart = "${pkgs.iptsd}/bin/iptsd";
       Restart = "always";
       RestartSec = "1";
     };
