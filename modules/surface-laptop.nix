@@ -8,7 +8,6 @@
 
   # Override common module settings under hardware.microsoft-surface
   hardware.microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
-  hardware.microsoft-surface.surface-control.enable = true;
 
   # Surface-specific and post-installation packages
   environment.systemPackages = with pkgs; [
