@@ -3,7 +3,7 @@
 {
   # Import the microsoft surface module from nixos-hardware
   imports = [
-    inputs.nixos-hardware.microsoft.surface
+    inputs.nixos-hardware.nixosModules.microsoft-surface
   ];
 
   # Surface specific configuration
