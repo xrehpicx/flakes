@@ -97,6 +97,5 @@
   system.stateVersion = "24.11";
 
   # Fix dual-boot time skew: use localtime for RTC
-  time.timeZone = "UTC";  # adjust to your timezone
-  hardware.clock.localTime = true;
+  time.timeZone = "Asia/Kolkata";  # set to Kolkata timezone
 } 
