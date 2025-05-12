@@ -17,11 +17,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Explicitly reference the correct branch for nixos-hardware
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    
   };
+
 
   outputs = { self, nixpkgs, nixos-unstable, hyprland, zen-browser, nixos-hardware, ... }@inputs:
     let
