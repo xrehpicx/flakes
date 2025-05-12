@@ -1,18 +1,15 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, nixos-unstable, ... }:
 
 {
-  # Import only the common Surface modules
+  # Import the common Surface module
   imports = [
     inputs.nixos-hardware.nixosModules."microsoft-surface-common"
   ];
 
-  # Override common module settings under hardware.microsoft-surface
-  hardware.microsoft-surface.kernelVersion = "stable";  # override from default 6.0.17
+  # Use the prebuilt Surface kernel from nixos-unstable binary cache
+  boot.kernelPackages = nixos-unstable.legacyPackages.${pkgs.system}.linuxPackages_surface;
 
-  # Enable Intel microcode updates
-  hardware.cpu.intel.updateMicrocode = true;
-
-  # Surface-specific and post-installation packages
+  # Add useful Surface utilities
   environment.systemPackages = with pkgs; [
     libwacom          # For tablet input devices
     powertop          # For power consumption analysis
@@ -20,6 +17,9 @@
     brightnessctl     # For display brightness control
     iio-sensor-proxy  # For automatic screen rotation
     linux-firmware    # Required firmware for various devices
+    # Add Surface-specific utilities from nixos-unstable
+    nixos-unstable.legacyPackages.${pkgs.system}.surfacectl
+    nixos-unstable.legacyPackages.${pkgs.system}.iptsd
   ];
 
   # Enable better power management
@@ -41,7 +41,7 @@
     };
   };
 
-  # Enable better touchpad support (updated path)
+  # Enable better touchpad support
   services.libinput = {
     enable = true;
     touchpad = {
@@ -60,77 +60,14 @@
   # Enable firmware updates through fwupd
   services.fwupd.enable = true;
 
-  # Remove incorrect microsoft-surface.ipts option; enable IPTSd correctly
-  # Ensure IPTSd daemon is installed and its service is enabled
+  # Enable IPTSd daemon for Surface touchscreen/pen support
   systemd.packages = with pkgs; [ iptsd ];
   services.udev.packages = with pkgs; [ iptsd ];
   systemd.services.iptsd.enable = true;
 
   # Explicitly disable power-profiles-daemon to avoid conflict with TLP
   services.power-profiles-daemon.enable = false;
-
-  # Fallback configuration in case the nixos-hardware overlay doesn't work
-  # This custom kernel configuration is commented out by default, but can be
-  # uncommented if needed
-  /*
-  boot.kernelPackages = let
-    linux_surface = { fetchurl, buildLinux, ... } @ args:
-      buildLinux (args // rec {
-        version = "6.1.61";
-        modDirVersion = version;
-
-        src = fetchurl {
-          url = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version}.tar.xz";
-          sha256 = "3ca2b4dd931c53165d5d87eb3a7d67e6dd69aaae6b5596c23bb688fe45a9d9aa";
-        };
-
-        kernelPatches = [
-          { 
-            name = "surface-patches";
-            patch = fetchurl {
-              url = "https://github.com/linux-surface/linux-surface/releases/download/6.1.61-1/patch-6.1.61-surface.patch";
-              sha256 = "0000000000000000000000000000000000000000000000000000000000000000"; # Replace with actual hash
-            };
-          }
-        ];
-
-        extraConfig = ''
-          # Surface specific configs
-          SURFACE_ACPI m
-          SURFACE_ACPI_NOTIFY y
-          SURFACE_ACPI_SSH m
-          SURFACE_ACPI_VHF m
-          SURFACE_ACPI_DTX m
-          SURFACE_ACPI_SAN m
-          SURFACE_BUTTON m
-          SURFACE_HID m
-          BATTERY_SURFACE m
-          CHARGER_SURFACE m
-          SURFACE_HOTPLUG m
-          SURFACE_PLATFORM m
-          SURFACE_AGGREGATOR m
-          SURFACE_AGGREGATOR_BUS m
-          SURFACE_AGGREGATOR_CDEV m
-          SURFACE_AGGREGATOR_HUB m
-          SURFACE_AGGREGATOR_REGISTRY m
-          SURFACE_AGGREGATOR_TABLET m
-          SURFACE_DTX m
-          SURFACE_GPE m
-          SURFACE_KBD m
-          SURFACE_PMC m
-          SURFACE_SAM m
-          SURFACE_SAM_SAN m
-          SURFACE_SAM_SSH m
-          SURFACE_SAM_SSH_DEBUG_DEVICE m
-          SURFACE_SAM_VHF m
-          SURFACE_BOOK3_DGPU_SWITCH m
-        '';
-
-        extraMeta.branch = "6.1";
-      } // (args.argsOverride or {}));
-    
-    custom_kernel = pkgs.callPackage linux_surface {};
-  in
-    pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor custom_kernel);
-  */
+  
+  # Enable Intel microcode updates
+  hardware.cpu.intel.updateMicrocode = true;
 } 

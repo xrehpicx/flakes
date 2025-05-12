@@ -4,6 +4,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     
+    # Add nixos-unstable for Surface kernel packages
+    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,7 +22,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, hyprland, zen-browser, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, nixos-unstable, hyprland, zen-browser, nixos-hardware, ... }@inputs:
     let
       lib = nixpkgs.lib;
       systems = [ "x86_64-linux" "aarch64-linux" ];
@@ -34,7 +37,11 @@
       nixosConfigurations = {
         black = lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; zen-browser = inputs.zen-browser; };
+          specialArgs = { 
+            inherit inputs; 
+            zen-browser = inputs.zen-browser;
+            nixos-unstable = nixos-unstable;
+          };
           modules = [ ./hosts/black/default.nix ];
         };
         # Add more hosts like this:

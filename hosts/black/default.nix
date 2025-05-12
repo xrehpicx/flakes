@@ -1,11 +1,11 @@
-{ config, pkgs, lib, inputs, zen-browser, ... }:
+{ config, pkgs, lib, inputs, zen-browser, nixos-unstable, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ../../modules/linux-secureboot.nix
     ../../modules/basic-packages.nix
-    ../../modules/surface-laptop.nix
+    (import ../../modules/surface-laptop.nix { inherit config lib pkgs inputs nixos-unstable; })
   ];
 
   networking = {
