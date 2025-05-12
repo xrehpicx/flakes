@@ -3,7 +3,9 @@
 {
   # Import the microsoft surface module from nixos-hardware
   imports = [
-    inputs.nixos-hardware.nixosModules.microsoft-surface
+    # Common Surface modules and the Intel Laptop profile
+    inputs.nixos-hardware.nixosModules."microsoft-surface-common"
+    inputs.nixos-hardware.nixosModules."microsoft-surface-surface-laptop-intel"
   ];
 
   # Surface specific configuration
@@ -13,13 +15,15 @@
     surface-aggregator.enable = true;
   };
 
-  # Surface-specific packages
+  # Surface-specific and post-installation packages
   environment.systemPackages = with pkgs; [
-    libwacom       # For tablet input devices
-    powertop       # For power consumption analysis
-    acpi           # For battery status
-    brightnessctl  # For display brightness control
-    iio-sensor-proxy # For automatic screen rotation
+    libwacom          # For tablet input devices
+    powertop          # For power consumption analysis
+    acpi              # For battery status
+    brightnessctl     # For display brightness control
+    iio-sensor-proxy  # For automatic screen rotation
+    linux-firmware    # Required firmware for various devices
+    intel-microcode   # CPU microcode updates for Intel processors
   ];
 
   # Enable better power management
@@ -65,6 +69,9 @@
 
   # Enable firmware updates through fwupd
   services.fwupd.enable = true;
+
+  # Include microcode in the initrd for Intel
+  boot.initrd.linuxPackages = with pkgs; [ intel-microcode ];
 
   # Fallback configuration in case the nixos-hardware overlay doesn't work
   # This custom kernel configuration is commented out by default, but can be
