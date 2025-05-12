@@ -28,15 +28,8 @@ in
     else pkgs.linuxPackages_latest
   );
 
-  # Ensure all necessary hardware modules are enabled
-  hardware = {
-    enableRedistributableFirmware = true;
-    
-    # Enable specific modules for Surface touchscreen
-    firmware = {
-      enableDefaultFirmware = true;
-    };
-  };
+  # Enable redistributable firmware support
+  hardware.enableRedistributableFirmware = true;
 
   # Load necessary kernel modules for touchscreen
   boot.kernelModules = [ 
@@ -106,13 +99,6 @@ in
       tappingDragLock = false;
       accelSpeed = "0.3";
       disableWhileTyping = true;
-    };
-  };
-
-  # Add X11 input configuration
-  services.xserver = {
-    libinput = {
-      enable = true;
     };
   };
 
