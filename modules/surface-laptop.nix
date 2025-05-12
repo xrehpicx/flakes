@@ -1,13 +1,27 @@
 { config, lib, pkgs, inputs, nixos-unstable, ... }:
 
+let
+  # Import the unstable channel properly
+  unstablePkgs = import nixos-unstable {
+    system = pkgs.system;
+    config.allowUnfree = true;
+  };
+  
+  # Determine if the Surface kernel is available
+  hasSurfaceKernel = builtins.hasAttr "linuxPackages_surface" unstablePkgs;
+in
 {
-  # Import the common Surface module
+  # Import the common Surface module with the correct path
   imports = [
-    inputs.nixos-hardware.nixosModules."microsoft-surface-common"
+    # The path should match the repository structure: microsoft/surface/common
+    inputs.nixos-hardware.nixosModules.microsoft-surface-common
   ];
 
-  # Use the prebuilt Surface kernel from nixos-unstable binary cache
-  boot.kernelPackages = nixos-unstable.legacyPackages.${pkgs.system}.linuxPackages_surface;
+  # Use the prebuilt Surface kernel from nixos-unstable if available, otherwise use regular kernel
+  boot.kernelPackages = 
+    if hasSurfaceKernel 
+    then unstablePkgs.linuxPackages_surface 
+    else pkgs.linuxPackages_latest;
 
   # Add useful Surface utilities
   environment.systemPackages = with pkgs; [
@@ -18,10 +32,8 @@
     iio-sensor-proxy  # For automatic screen rotation
     linux-firmware    # Required firmware for various devices
     libcamera         # For camera support in browsers
-    # Add Surface-specific utilities from nixos-unstable
-    nixos-unstable.legacyPackages.${pkgs.system}.surfacectl
-    nixos-unstable.legacyPackages.${pkgs.system}.iptsd
-  ];
+  ] ++ (if builtins.hasAttr "surfacectl" unstablePkgs then [ unstablePkgs.surfacectl ] else [])
+    ++ (if builtins.hasAttr "iptsd" unstablePkgs then [ unstablePkgs.iptsd ] else [ iptsd ]);
 
   # Enable better power management
   services.thermald.enable = true;

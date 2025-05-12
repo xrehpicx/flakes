@@ -5,7 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     
     # Add nixos-unstable for Surface kernel packages
-    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-unstable = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+      # Ensure nixos-unstable uses the same registry and overlays
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     
     hyprland = {
       url = "github:hyprwm/Hyprland";

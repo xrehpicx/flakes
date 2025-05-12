@@ -27,8 +27,9 @@ This repository contains my NixOS system configurations managed through flakes.
 
 This flake includes specific configuration for Microsoft Surface devices, using the common Surface modules from nixos-hardware with the following features:
 
-- Surface-patched kernel from nixos-unstable binary cache (no local compilation needed)
-- Surface utilities like `surfacectl` and `iptsd` for touchscreen/pen support
+- Surface-patched kernel from nixos-unstable binary cache (when available)
+- Fallback to latest mainline kernel if Surface kernel is not available
+- Surface utilities like `surfacectl` (if available) and `iptsd` for touchscreen/pen support
 - Power management optimizations with TLP
 - Camera support with libcamera
 
@@ -42,9 +43,9 @@ libcamerify firefox
 
 ### Using Surface Utilities
 
-The `surfacectl` utility is installed for command-line management of Surface device features. The `raj` user has been added to the `input` group for access to required devices.
+If available, the `surfacectl` utility is installed for command-line management of Surface device features. The `raj` user has been added to the `input` group for access to required devices.
 
-You can use surfacectl to manage various Surface features:
+You can use surfacectl (if installed) to manage various Surface features:
 
 ```bash
 # Show device information
