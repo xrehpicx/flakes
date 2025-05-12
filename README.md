@@ -23,6 +23,27 @@ This repository contains my NixOS system configurations managed through flakes.
 - Secure Boot support with automatic key management
 - KDE Plasma 6 and Hyprland desktop environments
 
+## Surface Laptop Setup
+
+This flake includes specific configuration for Microsoft Surface devices, using the common Surface modules from nixos-hardware with the following features:
+
+- Surface-patched kernel from nixos-unstable binary cache (no local compilation needed)
+- Surface utilities like `surfacectl` and `iptsd` for touchscreen/pen support
+- Power management optimizations with TLP
+- Camera support with libcamera
+
+### Camera Usage in Firefox
+
+To use the camera with proper support in Firefox, you can run:
+
+```bash
+libcamerify firefox
+```
+
+### Surface-Control
+
+The `surface-control` utility is enabled, allowing command-line management of Surface device features. The `raj` user has been added to the `surface-control` group for permission access.
+
 ## Usage
 
 ### Building and Activating

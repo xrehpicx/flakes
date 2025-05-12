@@ -9,6 +9,9 @@
   # Use the prebuilt Surface kernel from nixos-unstable binary cache
   boot.kernelPackages = nixos-unstable.legacyPackages.${pkgs.system}.linuxPackages_surface;
 
+  # Enable surface-control for command-line management of Surface devices
+  hardware.microsoft-surface.surface-control.enable = true;
+
   # Add useful Surface utilities
   environment.systemPackages = with pkgs; [
     libwacom          # For tablet input devices
@@ -17,6 +20,7 @@
     brightnessctl     # For display brightness control
     iio-sensor-proxy  # For automatic screen rotation
     linux-firmware    # Required firmware for various devices
+    libcamera         # For camera support in browsers
     # Add Surface-specific utilities from nixos-unstable
     nixos-unstable.legacyPackages.${pkgs.system}.surfacectl
     nixos-unstable.legacyPackages.${pkgs.system}.iptsd
